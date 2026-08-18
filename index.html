@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pré-análise de seu Projeto - Amplus Engenharia</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amplus: {
+              blue: '#0033A0',
+              blueDark: '#002270',
+              blueLight: '#EEF3FF',
+              yellow: '#FFB800',
+              gray: '#404041'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      body { background-color: #ffffff !important; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen py-8 px-4 font-sans text-amplus-gray">
+
+  <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-200">
+    
+    <!-- Cabeçalho com Logo Ampliada -->
+    <div class="border-b pb-6 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 no-print">
+      <div class="flex flex-col items-center sm:items-start gap-1">
+        <!-- Logo ampliada para h-24 -->
+        <img id="logoAmplus" src="AMPLUS 1.png" alt="Amplus Engenharia" class="h-24 w-auto object-contain"
+          onerror="this.onerror=null; this.src='logo.png';">
+        <p class="text-xs font-bold text-amplus-blue italic pl-1">"Se fosse fácil, você mesmo faria!"</p>
+      </div>
+
+      <div class="text-center sm:text-right">
+        <h1 class="text-xl font-black text-amplus-blue">Pré-análise de seu Projeto</h1>
+        <p class="text-xs text-slate-500">Estimativa customizada com logística a partir de Recife/PE</p>
+      </div>
+    </div>
+
+    <!-- Formulário Principal -->
+    <form id="formSimulador" class="space-y-6 no-print">
+      
+      <!-- 1. Endereço Completo e Localização da Obra -->
+      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+        <h2 class="text-sm font-bold text-amplus-blue uppercase tracking-wide">1. Endereço Completo da Obra & Frete</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">CEP da Obra</label>
+            <input type="text" id="cep" placeholder="50000-000" maxlength="9" required
+              class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-amplus-blue outline-none bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Cidade / Estado</label>
+            <input type="text" id="localidade" placeholder="Aguardando CEP..." readonly
+              class="w-full p-2.5 border bg-slate-100 rounded-lg text-sm font-medium text-amplus-gray outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Região Logística (Sede: Recife)</label>
+            <select id="regiaoFrete" onchange="calcularTotal()" class="w-full p-2.5 border rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-amplus-blue">
+              <option value="0">Recife e Região Metropolitana (RMR) - Isento</option>
+              <option value="450">Zona da Mata e Agreste PE (+ R$ 450,00)</option>
+              <option value="1200">Sertão de Pernambuco (+ R$ 1.200,00)</option>
+              <option value="2500">Outros Estados (+ R$ 2.500,00)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Logradouro (Rua / Avenida / Alameda)</label>
+            <input type="text" id="rua" placeholder="Ex: Av. Boa Viagem" required
+              class="w-full p-2.5 border rounded-lg text-sm outline-none bg-white focus:ring-2 focus:ring-amplus-blue">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Número / Ap / Bloco</label>
+            <input type="text" id="numero" placeholder="Ex: 1500, Apt 302" required
+              class="w-full p-2.5 border rounded-lg text-sm outline-none bg-white focus:ring-2 focus:ring-amplus-blue">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-amplus-gray mb-1">Bairro</label>
+          <input type="text" id="bairro" placeholder="Ex: Boa Viagem" required
+            class="w-full p-2.5 border rounded-lg text-sm outline-none bg-white focus:ring-2 focus:ring-amplus-blue">
+        </div>
+      </div>
+
+      <!-- 2. Dimensão do Imóvel -->
+      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+        <div class="flex justify-between items-center">
+          <h2 class="text-sm font-bold text-amplus-blue uppercase tracking-wide">2. Área Total da Obra / Reforma</h2>
+          <span id="valorArea" class="text-sm font-black text-amplus-blue bg-white px-3 py-1 border border-amplus-blue/20 rounded-lg">50 m²</span>
+        </div>
+        <input type="range" id="areaM2" min="10" max="500" value="50" step="5"
+          class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer accent-amplus-blue">
+      </div>
+
+      <!-- 3. Monte Seu Projeto (Acabamentos) -->
+      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+        <h2 class="text-sm font-bold text-amplus-blue uppercase tracking-wide">3. Monte Seu Projeto (Padrão de Acabamentos)</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Pisos e Cerâmicas</label>
+            <select id="piso" onchange="calcularTotal()" class="w-full p-2.5 border rounded-lg text-sm bg-white outline-none">
+              <option value="0">Cerâmica Padrão Comercial (Incluso)</option>
+              <option value="65">Porcelanato Polido 80x80 (+ R$ 65/m²)</option>
+              <option value="110">Porcelanato Grandes Formatos (+ R$ 110/m²)</option>
+              <option value="150">Piso Vinílico LVT Premium (+ R$ 150/m²)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Revestimento de Parede / Pintura</label>
+            <select id="revestimento" onchange="calcularTotal()" class="w-full p-2.5 border rounded-lg text-sm bg-white outline-none">
+              <option value="0">Pintura Acrílica Standard (Incluso)</option>
+              <option value="35">Pintura Lavável + Textura/Cimento Queimado (+ R$ 35/m²)</option>
+              <option value="80">Revestimento Cerâmico 3D / Pastilhas (+ R$ 80/m²)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Portas e Esquadrias</label>
+            <select id="portas" onchange="calcularTotal()" class="w-full p-2.5 border rounded-lg text-sm bg-white outline-none">
+              <option value="0">Portas Prontas Compensadas (Incluso)</option>
+              <option value="40">Portas de Madeira Maciça Pinus (+ R$ 40/m²)</option>
+              <option value="90">Esquadrias de Alumínio Preto + Vidro (+ R$ 90/m²)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Louças e Metais Sanitários</label>
+            <select id="banheiros" onchange="calcularTotal()" class="w-full p-2.5 border rounded-lg text-sm bg-white outline-none">
+              <option value="0">Louças e Metais Básicos (Incluso)</option>
+              <option value="50">Linha Média Celite/Incepa (+ R$ 50/m²)</option>
+              <option value="120">Linha Premium Deca/Docol Monocomando (+ R$ 120/m²)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Serviços de Engenharia -->
+      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+        <h2 class="text-sm font-bold text-amplus-blue uppercase tracking-wide">4. Portfólio Ampliado de Serviços de Engenharia</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <label class="flex items-start gap-3 p-3 bg-white border rounded-xl cursor-pointer hover:border-amplus-blue transition-all">
+            <input type="checkbox" class="servico-check accent-amplus-blue w-4 h-4 mt-1" value="execucao" data-preco="650" checked>
+            <div>
+              <div class="text-xs font-bold text-amplus-gray">Execução de Obra / Reforma com Gestão Técnica</div>
+              <div class="text-[11px] text-slate-500">Mão de obra gerenciada e acompanhamento de engenheiro (R$ 650/m²)</div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 bg-white border rounded-xl cursor-pointer hover:border-amplus-blue transition-all">
+            <input type="checkbox" class="servico-check accent-amplus-blue w-4 h-4 mt-1" value="projetos_complementares" data-preco="45">
+            <div>
+              <div class="text-xs font-bold text-amplus-gray">Projetos Estruturais e Complementares</div>
+              <div class="text-[11px] text-slate-500">Cálculo estrutural, elétrico, hidrossanitário e combate a incêndio (R$ 45/m²)</div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 bg-white border rounded-xl cursor-pointer hover:border-amplus-blue transition-all">
+            <input type="checkbox" class="servico-check accent-amplus-blue w-4 h-4 mt-1" value="projeto_arquitetonico" data-preco="50">
+            <div>
+              <div class="text-xs font-bold text-amplus-gray">Projeto Arquitetônico e Design de Interiores</div>
+              <div class="text-[11px] text-slate-500">Modelagem 3D, layout funcional e detalhamento de marcenaria (R$ 50/m²)</div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 bg-white border rounded-xl cursor-pointer hover:border-amplus-blue transition-all">
+            <input type="checkbox" class="servico-check accent-amplus-blue w-4 h-4 mt-1" value="laudo_art" data-preco="25">
+            <div>
+              <div class="text-xs font-bold text-amplus-gray">Laudo Técnico, Perícia e Emissão de ART</div>
+              <div class="text-[11px] text-slate-500">Vistoria predial, reforma de apartamento em condomínio e ART (R$ 25/m²)</div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 bg-white border rounded-xl cursor-pointer hover:border-amplus-blue transition-all">
+            <input type="checkbox" class="servico-check accent-amplus-blue w-4 h-4 mt-1" value="regularizacao" data-preco="30">
+            <div>
+              <div class="text-xs font-bold text-amplus-gray">Regularização de Imóveis e Habite-se</div>
+              <div class="text-[11px] text-slate-500">Aprovação em prefeitura, registro em cartório e habite-se (R$ 30/m²)</div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 bg-white border rounded-xl cursor-pointer hover:border-amplus-blue transition-all">
+            <input type="checkbox" class="servico-check accent-amplus-blue w-4 h-4 mt-1" value="gerenciamento" data-preco="35">
+            <div>
+              <div class="text-xs font-bold text-amplus-gray">Gerenciamento e Fiscalização Independente</div>
+              <div class="text-[11px] text-slate-500">Controle rigoroso de cronograma, qualidade e orçamentos (R$ 35/m²)</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- 5. Campo de Detalhamento Livre -->
+      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+        <h2 class="text-sm font-bold text-amplus-blue uppercase tracking-wide">5. Detalhes Específicos do Seu Projeto</h2>
+        <p class="text-xs text-slate-500">Descreva qualquer particularidade, alteração estrutural pretendida ou observação importante.</p>
+        <textarea id="detalhamentoLivre" rows="3" placeholder="Ex: Desejo integrar a varanda com a sala, trocar a tubulação de cobre existente e instalar iluminação em sanca de gesso..."
+          class="w-full p-3 border rounded-lg text-sm outline-none bg-white focus:ring-2 focus:ring-amplus-blue"></textarea>
+      </div>
+
+      <!-- 6. Dados do Cliente com E-mail -->
+      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+        <h2 class="text-sm font-bold text-amplus-blue uppercase tracking-wide">6. Dados do Cliente para Validação</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Seu Nome</label>
+            <input type="text" id="nome" required placeholder="Nome completo"
+              class="w-full p-2.5 border rounded-lg text-sm outline-none bg-white focus:ring-2 focus:ring-amplus-blue">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Seu E-mail</label>
+            <input type="email" id="email" required placeholder="seu@email.com"
+              class="w-full p-2.5 border rounded-lg text-sm outline-none bg-white focus:ring-2 focus:ring-amplus-blue">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-amplus-gray mb-1">Seu WhatsApp</label>
+            <input type="tel" id="telefone" required placeholder="(81) 99999-9999"
+              class="w-full p-2.5 border rounded-lg text-sm outline-none bg-white focus:ring-2 focus:ring-amplus-blue">
+          </div>
+        </div>
+      </div>
+
+      <!-- Painel de Valor e Envio -->
+      <div class="p-4 bg-amplus-blueLight border border-amplus-blue/20 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+          <span class="text-xs text-amplus-blue font-bold block">Valor Estimado Total:</span>
+          <span id="displayTotal" class="text-2xl font-black text-amplus-blue">R$ 0,00</span>
+        </div>
+        <button type="submit" 
+          class="w-full sm:w-auto py-3.5 px-8 bg-amplus-blue hover:bg-amplus-blueDark text-white font-bold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2">
+          Gerar Recibo e Enviar para Amplus
+        </button>
+      </div>
+
+    </form>
+
+    <!-- RECIBO COM FUNDO BRANCO PURO -->
+    <div id="reciboImpressao" class="hidden my-4 p-8 border-2 border-slate-300 rounded-xl bg-white text-slate-800 space-y-6">
+      
+      <!-- Cabeçalho Timbrado -->
+      <div class="flex justify-between items-start border-b border-slate-200 pb-4">
+        <div>
+          <h2 class="text-2xl font-black text-amplus-blue tracking-tight">AMPLUS ENGENHARIA</h2>
+          <p class="text-xs font-bold text-amplus-gray mt-0.5">"Se fosse fácil, você mesmo faria!"</p>
+          <p class="text-[11px] text-slate-500 mt-1">Sede: Recife/PE | amplusengenharia.eng.br | (81) 99745-0213</p>
+        </div>
+        <div class="text-right">
+          <span class="inline-block px-3 py-1 bg-slate-100 border border-slate-200 rounded font-mono text-xs font-bold text-slate-700" id="reciboProtocolo"></span>
+          <p class="text-[11px] text-slate-400 mt-1" id="reciboDataHora"></p>
+        </div>
+      </div>
+
+      <!-- Título do Documento -->
+      <div class="text-center py-2 bg-slate-50 border border-slate-100 rounded">
+        <h3 class="text-xs font-extrabold uppercase tracking-widest text-amplus-blue">Comprovante de Estimativa Preliminar de Obra</h3>
+      </div>
+
+      <!-- Bloco de Dados do Cliente e Endereço da Obra -->
+      <div class="grid grid-cols-2 gap-4 text-xs bg-white p-4 border border-slate-200 rounded-lg">
+        <div>
+          <p class="text-slate-400 font-semibold uppercase text-[10px]">Cliente</p>
+          <p class="font-bold text-slate-800 text-sm" id="reciboClienteNome">-</p>
+        </div>
+        <div>
+          <p class="text-slate-400 font-semibold uppercase text-[10px]">E-mail & WhatsApp</p>
+          <p class="font-bold text-slate-800" id="reciboClienteContato">-</p>
+        </div>
+        <div class="col-span-2">
+          <p class="text-slate-400 font-semibold uppercase text-[10px]">Endereço Completo da Obra</p>
+          <p class="font-bold text-slate-800" id="reciboEnderecoCompleto">-</p>
+        </div>
+      </div>
+
+      <!-- Detalhamento dos Itens Escolhidos -->
+      <div class="space-y-3 text-xs">
+        <h4 class="font-bold uppercase tracking-wider text-slate-500 border-b pb-1 text-[11px]">Detalhamento das Especificações</h4>
+        <div id="reciboDetalhamento" class="space-y-1.5 text-slate-700 leading-relaxed"></div>
+      </div>
+
+      <!-- Totalizador -->
+      <div class="border-t-2 border-slate-800 pt-4 flex justify-between items-center">
+        <div>
+          <span class="text-xs font-bold text-slate-500 block uppercase">Valor Total Estimado</span>
+          <span class="text-[10px] text-slate-400 italic">Serviços + Acabamentos + Logística</span>
+        </div>
+        <span id="reciboValor" class="text-2xl font-black text-amplus-blue"></span>
+      </div>
+
+      <div class="text-[10px] text-slate-400 italic text-center pt-2 border-t border-slate-100">
+        Documento gerado automaticamente via Simulador Web da Amplus Engenharia. Valores preliminares sujeitos a validação presencial.
+      </div>
+
+      <!-- Botões no fundo branco -->
+      <div class="flex gap-3 no-print pt-4 border-t border-slate-100">
+        <button onclick="window.print()" class="px-5 py-2.5 bg-amplus-blue text-white rounded-lg text-xs font-bold hover:bg-amplus-blueDark transition-all shadow-sm">
+          Imprimir / Salvar em PDF
+        </button>
+        <button onclick="fecharRecibo()" class="px-5 py-2.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold hover:bg-slate-200 transition-all border border-slate-200">
+          Voltar ao Simulador
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const WHATSAPP_AMPLUS = "5581997450213";
+
+    const areaInput = document.getElementById('areaM2');
+    areaInput.addEventListener('input', (e) => {
+      document.getElementById('valorArea').innerText = `${e.target.value} m²`;
+      calcularTotal();
+    });
+
+    document.querySelectorAll('.servico-check').forEach(el => el.addEventListener('change', calcularTotal));
+
+    // Busca de CEP via ViaCEP com auto-preenchimento
+    document.getElementById('cep').addEventListener('blur', async (e) => {
+      const cep = e.target.value.replace(/\D/g, '');
+      if (cep.length === 8) {
+        try {
+          const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+          const data = await res.json();
+          if (!data.erro) {
+            document.getElementById('localidade').value = `${data.localidade} / ${data.uf}`;
+            if (data.logradouro) document.getElementById('rua').value = data.logradouro;
+            if (data.bairro) document.getElementById('bairro').value = data.bairro;
+            
+            if (data.uf !== 'PE') {
+              document.getElementById('regiaoFrete').value = "2500";
+            }
+            calcularTotal();
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
+
+    function calcularTotal() {
+      const area = parseFloat(areaInput.value);
+      
+      let custoM2Servicos = 0;
+      document.querySelectorAll('.servico-check:checked').forEach(item => {
+        custoM2Servicos += parseFloat(item.dataset.preco);
+      });
+
+      const piso = parseFloat(document.getElementById('piso').value);
+      const revestimento = parseFloat(document.getElementById('revestimento').value);
+      const portas = parseFloat(document.getElementById('portas').value);
+      const banheiros = parseFloat(document.getElementById('banheiros').value);
+
+      const custoM2Acabamentos = piso + revestimento + portas + banheiros;
+      const frete = parseFloat(document.getElementById('regiaoFrete').value);
+
+      const total = (area * (custoM2Servicos + custoM2Acabamentos)) + frete;
+      document.getElementById('displayTotal').innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      return { total, area, frete };
+    }
+
+    calcularTotal();
+
+    document.getElementById('formSimulador').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+      const telefone = document.getElementById('telefone').value;
+      
+      const rua = document.getElementById('rua').value;
+      const numero = document.getElementById('numero').value;
+      const bairro = document.getElementById('bairro').value;
+      const localidade = document.getElementById('localidade').value || 'Não informada';
+      const cep = document.getElementById('cep').value;
+      const enderecoCompleto = `${rua}, Nº ${numero} - ${bairro}, ${localidade} (CEP: ${cep})`;
+
+      const detalhamentoLivre = document.getElementById('detalhamentoLivre').value || 'Nenhuma observação adicional.';
+      const { total, area } = calcularTotal();
+
+      let servicosSelecionados = [];
+      document.querySelectorAll('.servico-check:checked').forEach(item => {
+        servicosSelecionados.push("• " + item.parentElement.querySelector('.text-xs').innerText);
+      });
+
+      if (servicosSelecionados.length === 0) {
+        alert("Selecione ao menos um serviço de engenharia.");
+        return;
+      }
+
+      const pisoNome = document.getElementById('piso').options[document.getElementById('piso').selectedIndex].text;
+      const revesNome = document.getElementById('revestimento').options[document.getElementById('revestimento').selectedIndex].text;
+      const portasNome = document.getElementById('portas').options[document.getElementById('portas').selectedIndex].text;
+      const banheirosNome = document.getElementById('banheiros').options[document.getElementById('banheiros').selectedIndex].text;
+      const freteNome = document.getElementById('regiaoFrete').options[document.getElementById('regiaoFrete').selectedIndex].text;
+
+      const valorFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      const protocolo = "AMP-" + Math.floor(100000 + Math.random() * 900000);
+      const dataHora = new Date().toLocaleString('pt-BR');
+
+      // MENSAGEM FORMATADA DO WHATSAPP
+      const mensagemWhatsApp = 
+`*AMPLUS ENGENHARIA*
+_"Se fosse fácil, você mesmo faria!"_
+
+----------------------------------
+*COMPROVANTE DE PRÉ-ANÁLISE DE PROJETO*
+*Protocolo:* ${protocolo}
+*Data/Hora:* ${dataHora}
+
+*DADOS DO CLIENTE*
+• *Nome:* ${nome}
+• *E-mail:* ${email}
+• *Telefone:* ${telefone}
+
+*ENDEREÇO DA OBRA*
+• ${enderecoCompleto}
+
+*SERVIÇOS SOLICITADOS*
+${servicosSelecionados.join('\n')}
+
+*ESPECIFICAÇÕES DO PROJETO*
+• *Área Total:* ${area} m²
+• *Pisos:* ${pisoNome}
+• *Paredes:* ${revesNome}
+• *Portas/Esquadrias:* ${portasNome}
+• *Louças/Metais:* ${banheirosNome}
+• *Logística:* ${freteNome}
+
+*DETALHES DO CLIENTE*
+_"${detalhamentoLivre}"_
+
+----------------------------------
+*VALOR ESTIMADO TOTAL:* *${valorFormatado}*
+----------------------------------
+
+*Site:* amplusengenharia.eng.br
+*Atendimento:* (81) 99745-0213
+
+_Estimativa gerada via simulador web. Aguardo contato para vistoria técnica._`;
+
+      // Atualiza visualização na tela
+      document.getElementById('reciboProtocolo').innerText = `PROTOCOLO: ${protocolo}`;
+      document.getElementById('reciboDataHora').innerText = dataHora;
+      document.getElementById('reciboClienteNome').innerText = nome;
+      document.getElementById('reciboClienteContato').innerText = `${email} | ${telefone}`;
+      document.getElementById('reciboEnderecoCompleto').innerText = enderecoCompleto;
+      document.getElementById('reciboValor').innerText = valorFormatado;
+
+      document.getElementById('reciboDetalhamento').innerHTML = `
+        <p><strong>Serviços Contratados:</strong><br>${servicosSelecionados.join('<br>')}</p>
+        <p class="mt-2"><strong>Acabamentos:</strong> ${pisoNome} | ${revesNome} | ${portasNome} | ${banheirosNome}</p>
+        <p><strong>Logística/Frete:</strong> ${freteNome}</p>
+        <p class="mt-2 p-2 bg-slate-50 border rounded italic"><strong>Observações do Cliente:</strong> "${detalhamentoLivre}"</p>
+      `;
+
+      document.getElementById('reciboImpressao').classList.remove('hidden');
+
+      // Dispara envio do WhatsApp
+      window.open(`https://wa.me/${WHATSAPP_AMPLUS}?text=${encodeURIComponent(mensagemWhatsApp)}`, '_blank');
+    });
+
+    function fecharRecibo() {
+      document.getElementById('reciboImpressao').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
