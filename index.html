@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pré-análise de seu Projeto - Engeamplus Engenharia</title>
+  
+  <!-- Meta Tags Open Graph para o próprio Simulador -->
+  <meta property="og:title" content="Pré-análise de Projeto - Engeamplus Engenharia" />
+  <meta property="og:description" content="Simulador e estimativa customizada de obras e projetos." />
+  <meta property="og:image" content="AMPLUS 1.png" />
+
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -12,11 +18,11 @@
         extend: {
           colors: {
             amplus: {
-              blue: '#1E3A6D',      // Azul institucional da marca
-              blueDark: '#13264A',  // Azul escuro para hover
-              blueLight: '#EEF3FF', // Fundo azul claro
-              yellow: '#E5A119',    // Amarelo/Ouro da marca
-              gray: '#404041'       // Cinza do texto
+              blue: '#1E3A6D',
+              blueDark: '#13264A',
+              blueLight: '#EEF3FF',
+              yellow: '#E5A119',
+              gray: '#404041'
             }
           }
         }
@@ -271,7 +277,7 @@
           <img src="AMPLUS 1.png" alt="Engeamplus Engenharia" class="h-16 w-auto object-contain" onerror="this.style.display='none'">
           <div>
             <h2 class="text-xl font-black text-amplus-blue tracking-tight">ENGEAMPLUS ENGENHARIA</h2>
-            <p class="text-[11px] text-slate-500 mt-0.5">Sede: Recife/PE | https://engeamplus.com.br/ | (81) 99745-0213</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Sede: Recife/PE | engeamplus.com.br | (81) 99745-0213</p>
           </div>
         </div>
         <div class="text-left sm:text-right">
@@ -427,7 +433,7 @@
       const protocolo = "ENG-" + Math.floor(100000 + Math.random() * 900000);
       const dataHora = new Date().toLocaleString('pt-BR');
 
-      // MENSAGEM FORMATADA DO WHATSAPP
+      // MENSAGEM FORMATADA DO WHATSAPP (Sem https:// para não puxar o preview antigo do site)
       const mensagemWhatsApp = 
 `*ENGEAMPLUS ENGENHARIA*
 
@@ -462,7 +468,7 @@ _"${detalhamentoLivre}"_
 *VALOR ESTIMADO TOTAL:* *${valorFormatado}*
 ----------------------------------
 
-*Site:* https://engeamplus.com.br/
+*Site:* engeamplus.com.br
 *Atendimento:* (81) 99745-0213
 
 _Estimativa gerada via simulador web. Aguardo contato para vistoria técnica._`;
