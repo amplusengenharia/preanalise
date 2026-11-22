@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pré-análise de seu Projeto - Amplus Engenharia</title>
+  <title>Pré-análise de seu Projeto - Engeamplus Engenharia</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -12,11 +12,11 @@
         extend: {
           colors: {
             amplus: {
-              blue: '#0033A0',
-              blueDark: '#002270',
-              blueLight: '#EEF3FF',
-              yellow: '#FFB800',
-              gray: '#404041'
+              blue: '#1E3A6D',      // Azul institucional da marca
+              blueDark: '#13264A',  // Azul escuro para hover
+              blueLight: '#EEF3FF', // Fundo azul claro
+              yellow: '#E5A119',    // Amarelo/Ouro da marca
+              gray: '#404041'       // Cinza do texto
             }
           }
         }
@@ -46,17 +46,17 @@
       <span class="text-[11px] text-slate-400">amplusengenharia.eng.br</span>
     </div>
 
-    <!-- Cabeçalho com Logo Ampliada -->
+    <!-- Cabeçalho com Nova Logo Recortada -->
     <div class="border-b pb-6 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 no-print">
-      <div class="flex flex-col items-center sm:items-start gap-1">
-        <img id="logoAmplus" src="AMPLUS 1.png" alt="Amplus Engenharia" class="h-24 w-auto object-contain"
+      <div class="flex items-center justify-center sm:justify-start">
+        <img id="logoAmplus" src="AMPLUS 1.png" alt="Engeamplus Engenharia" 
+          class="h-24 sm:h-28 w-auto object-contain"
           onerror="this.onerror=null; this.src='logo.png';">
-        <p class="text-xs font-bold text-amplus-blue italic pl-1">"Se fosse fácil, você mesmo faria!"</p>
       </div>
 
       <div class="text-center sm:text-right">
-        <h1 class="text-xl font-black text-amplus-blue">Pré-análise de seu Projeto</h1>
-        <p class="text-xs text-slate-500">Estimativa customizada com logística a partir de Recife/PE</p>
+        <h1 class="text-xl sm:text-2xl font-black text-amplus-blue">Pré-análise de seu Projeto</h1>
+        <p class="text-xs text-slate-500 mt-1">Estimativa customizada com logística a partir de Recife/PE</p>
       </div>
     </div>
 
@@ -256,7 +256,7 @@
         </div>
         <button type="submit" 
           class="w-full sm:w-auto py-3.5 px-8 bg-amplus-blue hover:bg-amplus-blueDark text-white font-bold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2">
-          Gerar Recibo e Enviar para Amplus
+          Gerar Recibo e Enviar para Engeamplus
         </button>
       </div>
 
@@ -265,14 +265,16 @@
     <!-- RECIBO COM FUNDO BRANCO PURO -->
     <div id="reciboImpressao" class="hidden my-4 p-8 border-2 border-slate-300 rounded-xl bg-white text-slate-800 space-y-6">
       
-      <!-- Cabeçalho Timbrado -->
-      <div class="flex justify-between items-start border-b border-slate-200 pb-4">
-        <div>
-          <h2 class="text-2xl font-black text-amplus-blue tracking-tight">AMPLUS ENGENHARIA</h2>
-          <p class="text-xs font-bold text-amplus-gray mt-0.5">"Se fosse fácil, você mesmo faria!"</p>
-          <p class="text-[11px] text-slate-500 mt-1">Sede: Recife/PE | amplusengenharia.eng.br | (81) 99745-0213</p>
+      <!-- Cabeçalho Timbrado com Logo -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 pb-4 gap-4">
+        <div class="flex items-center gap-4">
+          <img src="AMPLUS 1.png" alt="Engeamplus Engenharia" class="h-16 w-auto object-contain" onerror="this.style.display='none'">
+          <div>
+            <h2 class="text-xl font-black text-amplus-blue tracking-tight">ENGEAMPLUS ENGENHARIA</h2>
+            <p class="text-[11px] text-slate-500 mt-0.5">Sede: Recife/PE | amplusengenharia.eng.br | (81) 99745-0213</p>
+          </div>
         </div>
-        <div class="text-right">
+        <div class="text-left sm:text-right">
           <span class="inline-block px-3 py-1 bg-slate-100 border border-slate-200 rounded font-mono text-xs font-bold text-slate-700" id="reciboProtocolo"></span>
           <p class="text-[11px] text-slate-400 mt-1" id="reciboDataHora"></p>
         </div>
@@ -284,7 +286,7 @@
       </div>
 
       <!-- Bloco de Dados do Cliente e Endereço da Obra -->
-      <div class="grid grid-cols-2 gap-4 text-xs bg-white p-4 border border-slate-200 rounded-lg">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs bg-white p-4 border border-slate-200 rounded-lg">
         <div>
           <p class="text-slate-400 font-semibold uppercase text-[10px]">Cliente</p>
           <p class="font-bold text-slate-800 text-sm" id="reciboClienteNome">-</p>
@@ -293,7 +295,7 @@
           <p class="text-slate-400 font-semibold uppercase text-[10px]">E-mail & WhatsApp</p>
           <p class="font-bold text-slate-800" id="reciboClienteContato">-</p>
         </div>
-        <div class="col-span-2">
+        <div class="sm:col-span-2">
           <p class="text-slate-400 font-semibold uppercase text-[10px]">Endereço Completo da Obra</p>
           <p class="font-bold text-slate-800" id="reciboEnderecoCompleto">-</p>
         </div>
@@ -315,7 +317,7 @@
       </div>
 
       <div class="text-[10px] text-slate-400 italic text-center pt-2 border-t border-slate-100">
-        Documento gerado automaticamente via Simulador Web da Amplus Engenharia. Valores preliminares sujeitos a validação presencial.
+        Documento gerado automaticamente via Simulador Web da Engeamplus Engenharia. Valores preliminares sujeitos a validação presencial.
       </div>
 
       <!-- Botões no fundo branco -->
@@ -422,13 +424,12 @@
       const freteNome = document.getElementById('regiaoFrete').options[document.getElementById('regiaoFrete').selectedIndex].text;
 
       const valorFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-      const protocolo = "AMP-" + Math.floor(100000 + Math.random() * 900000);
+      const protocolo = "ENG-" + Math.floor(100000 + Math.random() * 900000);
       const dataHora = new Date().toLocaleString('pt-BR');
 
       // MENSAGEM FORMATADA DO WHATSAPP
       const mensagemWhatsApp = 
-`*AMPLUS ENGENHARIA*
-_"Se fosse fácil, você mesmo faria!"_
+`*ENGEAMPLUS ENGENHARIA*
 
 ----------------------------------
 *COMPROVANTE DE PRÉ-ANÁLISE DE PROJETO*
